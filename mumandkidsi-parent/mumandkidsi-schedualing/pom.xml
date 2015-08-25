@@ -15,8 +15,8 @@
   
   <dependencies>
 		<dependency>
-			<groupId>gotoagilevn.com.nguyenle</groupId>
-			<artifactId>mamacooking-persitence</artifactId>
+			<groupId>com.nguyenle.gotoagilevn.mumandkid</groupId>
+			<artifactId>mumandkidsi-persitence</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
