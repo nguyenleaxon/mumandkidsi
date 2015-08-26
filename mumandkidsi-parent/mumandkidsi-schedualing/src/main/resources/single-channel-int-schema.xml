@@ -34,8 +34,6 @@
 	<service-activator input-channel="videosFromChannel"
 		output-channel="incomeVideoSplitter" ref="gettingAllVideosFromChannelServiceActivator" />
 
-	<!-- <service-activator input-channel="crawlingVideos" -->
-	<!-- output-channel="splitterVideos" ref="clawlingVideoSplitter" /> -->
 
 	<splitter input-channel="incomeVideoSplitter" output-channel="outgoing-splitter" />
 	<channel id="outgoing-splitter">
@@ -80,12 +78,12 @@
 	</beans:bean>
 
 	<jms:message-driven-channel-adapter
-		id="jmsIn" destination="requestQueue" channel="jmsInChannel" />
+		id="jmsInMumandKid" destination="requestQueueMumandKid" channel="jmsInChannelMumandKid" />
 
-	<channel id="jmsInChannel" />
-	<service-activator input-channel="jmsInChannel"	ref="jmsServiceActivator" />
+	<channel id="jmsInChannelMumandKid" />
+	<service-activator input-channel="jmsInChannelMumandKid"	ref="jmsServiceActivator" />
 
-	<beans:bean id="requestQueue" class="org.apache.activemq.command.ActiveMQTopic">
+	<beans:bean id="requestQueueMumandKid" class="org.apache.activemq.command.ActiveMQTopic">
 		<beans:constructor-arg name="name" value="test.topic" />
 	</beans:bean>
 </beans:beans>
