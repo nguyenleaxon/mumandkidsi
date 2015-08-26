@@ -15,9 +15,9 @@
   
   <dependencies>
 		<dependency>
-			<groupId>com.nguyenle.gotoagilevn.mumandkid</groupId>
-			<artifactId>mumandkidsi-persitence</artifactId>
-			<version>${project.version}</version>
+		   <groupId>com.nguyenle.gotoagilevn.mumandkid</groupId>
+		<artifactId>mumandkidsi-persitence</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
