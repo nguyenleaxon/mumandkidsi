@@ -2,17 +2,22 @@ package com.nguyenle.gotoagilevn.mumandchild.persistence.vo;
 
 import java.io.Serializable;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="channel")
+@Document(collection = "channel")
 public class VideoChannel implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	private ObjectId id;
 	private String channelName;
 	private String channelUrl;
 	private Boolean isActive;
-	
-	public VideoChannel(String channelName,String channelUrl) {
+
+	public VideoChannel(String channelName, String channelUrl) {
 		this.channelName = channelName;
 		this.channelUrl = channelUrl;
 	}
@@ -40,5 +45,5 @@ public class VideoChannel implements Serializable {
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-	
+
 }

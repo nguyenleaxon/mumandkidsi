@@ -1,7 +1,6 @@
 package com.nguyenle.gotoagilevn.mumandchild.schedual;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class CrawlerVideosJob {
 	VideoChannelService channelService;
 
 	//@Scheduled(fixedRate = 4000)
-	@Scheduled(cron = "0 50 22 * * *")
+	@Scheduled(cron = "0 29 23 * * *")
 	public void scheduleVideoHandling() {
 		Collection<VideoChannel> videoChannel = getAllVideoChannelsFromDatabase();
 		videoChannelGateway.getAllVideoChanelsFromDB(videoChannel);
@@ -37,8 +36,9 @@ public class CrawlerVideosJob {
 	private List<VideoChannel> getAllVideoChannelsFromDatabase() {
 		List<VideoChannel> channels = null;
 		try {
-			LOGGER.info("Get all channel from database and pass the channel to single youtube channel");
+			LOGGER.info("Get all active channel from database and pass the channel to single youtube channel");
 			channels = channelService.getAllActiveChannel();
+			
 
 		} catch (Exception e) {
 			LOGGER.error(e);

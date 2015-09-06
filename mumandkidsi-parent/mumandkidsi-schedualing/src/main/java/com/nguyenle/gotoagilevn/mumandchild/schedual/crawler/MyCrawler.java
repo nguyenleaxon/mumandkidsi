@@ -7,9 +7,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
-
+import com.nguyenle.gotoagilevn.mumandchild.persistence.service.VideoChannelService;
 import com.nguyenle.gotoagilevn.mumandchild.persistence.vo.Video;
 
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -17,8 +15,11 @@ import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
+
 public class MyCrawler extends WebCrawler {
 
+	
+	
 	private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg" + "|png|mp3|mp3|zip|gz))$");
 
 	 Map<String, Video> foodMap = new HashMap<String, Video>();
@@ -68,15 +69,16 @@ public class MyCrawler extends WebCrawler {
 		foodMap.clear();
 		String url = page.getWebURL().getURL();
 		System.out.println("URL " + url);
-		
+		String channel = "";
 		if (page.getParseData() instanceof HtmlParseData) {
-			//
+			
 			try {
 
 				if (url.contains("channel")) {
-					 addFoodFromChannel(page);
+					 channel = page.getWebURL().getURL();
+					 addFoodFromChannel(page,channel);
 				} else {
-					addFoodFromNoneChannel(page);
+					addFoodFromNoneChannel(page,channel);
 				}
 
 				for (Map.Entry<String, Video> entry : foodMap.entrySet()) {
@@ -92,7 +94,7 @@ public class MyCrawler extends WebCrawler {
 
 	}
 
-	private void addFoodFromChannel(Page page) throws Exception {
+	private void addFoodFromChannel(Page page,String channel) throws Exception {
 		String content = new String(page.getContentData(), page.getContentCharset());
 		Pattern pattern = Pattern.compile("<a[^>]*title=\"(.*)\"*href=\"([^\"]*)\"[^>]*>(.*)</a>", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(content);
@@ -102,15 +104,15 @@ public class MyCrawler extends WebCrawler {
 				String[] name = matcher.group(1).split("\"");
 				Video food = new Video();
 				food.setName(name[0]);
-				//food.setUrl(matcher.group(2));
-				food.setUrl(image[1]);
+		    	food.setUrl(image[1]);
 				food.setImage("//i.ytimg.com/vi/" + image[1] + "/mqdefault.jpg");
+				food.setChannelURL(channel);
 				foodMap.put(matcher.group(1), food);
 			}
 		}
 	}
 
-	private void addFoodFromNoneChannel(Page page) throws Exception {
+	private void addFoodFromNoneChannel(Page page,String channel) throws Exception {
 		String content = new String(page.getContentData(), page.getContentCharset());
 		Pattern pattern = Pattern.compile("<a href=\"([^\"]*)\"[^>]* title=\"(.*)\">", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(content);
@@ -122,7 +124,7 @@ public class MyCrawler extends WebCrawler {
 	        	String[] images = imageElement.split("=");
 	        	Video food = new Video();
 				food.setName(elements[0]);
-				//food.setUrl(matcher.group(1));
+				food.setChannelURL(channel);
 				food.setUrl(images[1]);
 				food.setImage("//i.ytimg.com/vi/" + images[1] + "/default.jpg");
 				foodMap.put(matcher.group(1), food);
@@ -140,6 +142,6 @@ public class MyCrawler extends WebCrawler {
 	    return foods;
 	  }
 
-
+     
 
 }

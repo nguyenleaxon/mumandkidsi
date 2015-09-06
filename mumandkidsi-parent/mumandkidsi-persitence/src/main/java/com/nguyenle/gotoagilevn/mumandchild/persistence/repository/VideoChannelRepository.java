@@ -14,4 +14,7 @@ public interface VideoChannelRepository extends MongoRepository<VideoChannel, St
 	
 	@Query("{isActive : ?0}")
 	public List<VideoChannel> findAllActiveChannel(boolean active);
+	
+	@Query("{channelUrl : ?0}")
+	public VideoChannel getChannelByUrl(String channelUrl);
 }

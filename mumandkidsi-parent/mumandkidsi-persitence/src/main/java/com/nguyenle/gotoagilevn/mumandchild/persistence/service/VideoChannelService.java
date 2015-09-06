@@ -7,4 +7,6 @@ import com.nguyenle.gotoagilevn.mumandchild.persistence.vo.VideoChannel;
 public interface VideoChannelService {
 
 	List<VideoChannel> getAllActiveChannel() throws Exception;
+	
+	VideoChannel getChannelByUrl(String channelUrl) throws Exception;
 }

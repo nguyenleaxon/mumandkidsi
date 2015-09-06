@@ -35,45 +35,31 @@
 		output-channel="incomeVideoSplitter" ref="gettingAllVideosFromChannelServiceActivator" />
 
 
-	<splitter input-channel="incomeVideoSplitter" output-channel="outgoing-splitter" />
+	<splitter input-channel="incomeVideoSplitter" output-channel="savingDB" />
 	<channel id="outgoing-splitter">
-		<dispatcher task-executor="taskExecutor" />		
+		<dispatcher task-executor="taskExecutor" />
 	</channel>
-	
+
 	<beans:bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<!-- Use 1 for sequential processing -->
 		<beans:property name="corePoolSize" value="1" />
 		<beans:property name="maxPoolSize" value="1" />
 		<beans:property name="threadNamePrefix" value="Splitter Message Handler " />
-		<beans:property name="waitForTasksToCompleteOnShutdown" value="true" />
+		<beans:property name="waitForTasksToCompleteOnShutdown"
+			value="true" />
 	</beans:bean>
-	<filter id="filterVideo" input-channel="outgoing-splitter" ref="videoCategoryFilter"
-		method="accept" output-channel="transformVideo" discard-channel="rejectedVideo" />
 
-	<channel id="transformVideo" />
-	<transformer input-channel="transformVideo" output-channel="savingDB"
-		method="addCategoryProperties" ref="addCategoryPropertiesTransform" />
-
-	<channel id="rejectedVideo" />
-	<service-activator input-channel="rejectedVideo"
-		output-channel="savingDB" ref="loggingRejectVideoServiceActivator" />
-	<!-- <router input-channel="singleVideo" ref="videoCategoryRoute" /> -->
-
-	<!-- <exception-type-router input-channel="errorChannel"> -->
-	<!-- <mapping exception-type="org.springframework.web.client.HttpServerErrorException" 
-		channel="resendableMessagesChannel"/> -->
-	<!-- <mapping exception-type="org.springframework.web.client.ResourceAccessException" 
-		channel="resendableMessagesChannel"/> -->
-	<!-- </exception-type-router> -->
-
+<!-- 	<transformer input-channel="transformVideo" output-channel="savingDB" -->
+<!-- 		method="addCategoryProperties" ref="addCategoryPropertiesTransform" /> -->
 
 
 	<channel id="savingDB" />
 	<jms:outbound-channel-adapter id="jmsout"
-		channel="savingDB" destination="requestQueue" />
+		channel="savingDB" destination="requestQueueMumandKid" />
 
-	<beans:bean id="connectionFactory"	class="org.apache.activemq.ActiveMQConnectionFactory">
+	<beans:bean id="connectionFactory"
+		class="org.apache.activemq.ActiveMQConnectionFactory">
 		<beans:property name="brokerURL" value="vm://localhost" />
 	</beans:bean>
 
@@ -81,7 +67,8 @@
 		id="jmsInMumandKid" destination="requestQueueMumandKid" channel="jmsInChannelMumandKid" />
 
 	<channel id="jmsInChannelMumandKid" />
-	<service-activator input-channel="jmsInChannelMumandKid"	ref="jmsServiceActivator" />
+	<service-activator input-channel="jmsInChannelMumandKid"
+		ref="jmsServiceActivator" />
 
 	<beans:bean id="requestQueueMumandKid" class="org.apache.activemq.command.ActiveMQTopic">
 		<beans:constructor-arg name="name" value="test.topic" />

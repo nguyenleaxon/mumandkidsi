@@ -20,4 +20,10 @@ public class VideoChannelServiceImpl implements VideoChannelService {
 		return channelRepository.findAllActiveChannel(true);
 	}
 
+	@Override
+	public VideoChannel getChannelByUrl(String channelUrl) throws Exception {
+		VideoChannel channel =channelRepository.getChannelByUrl(channelUrl);
+		return channel;
+	}
+
 }
